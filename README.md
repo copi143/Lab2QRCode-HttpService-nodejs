@@ -1,0 +1,1 @@
+# lab2qrcode-httpservice-nodejs
