@@ -1,0 +1,42 @@
+name: Cross-Platform CI
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [16.x, 18.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix['node-version'] }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm start
+
+      - name: Build project
+        run: npm run build
+
+      - name: Upload build artifacts
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-${{ matrix.os }}-node-${{ matrix.node-version }}
