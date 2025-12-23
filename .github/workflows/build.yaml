@@ -30,12 +30,13 @@ jobs:
         run: npm install
 
       - name: Run tests
+        shell: pwsh
         run: |
-          npm start &
-          SERVER_PID=$!
+          Start-Process -NoNewWindow npm "start"
+    
+          # 等待服务器启动
+          Start-Sleep -Seconds 2
           
-          echo "等待服务器启动..."
-          sleep 2
-          
-          # 检查服务器是否正常运行
-          curl -f http://localhost:8080/ || echo "服务器启动失败"
+          # 测试服务器
+          $response = Invoke-WebRequest -Uri "http://localhost:8080/" -UseBasicParsing
+          Write-Host "服务器返回: $($response.Content)"
