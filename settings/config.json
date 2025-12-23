@@ -3,5 +3,10 @@
     "host": "0.0.0.0",
     "port": 8080,
     "ssl_enabled": false
+  },
+  "app": {
+    "version": "v2.1.0",
+    "update_url": "https://github.com/Mq-b/Lab2QRCode/releases/download/v2.1.0/Lab2QRCode.zip",
+    "update_log": "1. 修复了一些已知问题\n2. 优化了性能\n3. 增加了新功能"
   }
 }

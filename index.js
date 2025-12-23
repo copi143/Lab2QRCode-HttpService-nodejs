@@ -1,17 +1,17 @@
-
 const http = require('http');
 const express = require('express');
 const ConfigLoaderClass = require('./src/configLoader');
+const mainRoutes = require('./src/routes/mainRoutes');
+const versionRoutes = require('./src/routes/versionRoutes');
 
 const app = express();
 
-app.get('/', (req, res) => {
-    res.status(200).json({ message: 'Lab2QRCode API' });
-});
+// 中间件：解析JSON请求体
+app.use(express.json());
 
-app.get('/status', (req, res) => {
-    res.status(200).json({ status: 'OK' });
-});
+// 使用路由
+app.use('/', mainRoutes);        // 主路由（根路径和状态检查）
+app.use('/', versionRoutes);     // 版本检查路由
 
 const server = http.createServer(app);
 
