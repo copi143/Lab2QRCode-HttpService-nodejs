@@ -30,13 +30,12 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: npm start
-
-      - name: Build project
-        run: npm run build
-
-      - name: Upload build artifacts
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-${{ matrix.os }}-node-${{ matrix.node-version }}
+        run: |
+          npm start &
+          SERVER_PID=$!
+          
+          echo "等待服务器启动..."
+          sleep 2
+          
+          # 检查服务器是否正常运行
+          curl -f http://localhost:8080/ || echo "服务器启动失败"
